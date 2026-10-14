@@ -1,0 +1,55 @@
+class Data {
+    int value;
+    boolean available = false;
+
+    // Producer calls this method to supply new data
+    synchronized void produce(int v) {
+        while (available) {
+            try { 
+                wait(); 
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        
+        value = v;
+        available = true;
+        System.out.println("Produced: " + value);
+        notifyAll(); // Wake up waiting threads (Consumer)
+    }
+
+    // Consumer calls this method to process existing data
+    synchronized void consume() {
+        while (!available) {
+            try { 
+                wait(); 
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        System.out.println("Consumed: " + value);
+        available = false;
+        notifyAll(); // Wake up waiting threads (Producer)
+    }
+}
+
+public class InterThread {
+    public static void main(String[] args) {
+        Data d = new Data();
+
+        // Producer thread
+        new Thread(() -> {
+            for (int i = 1; i <= 5; i++) {
+                d.produce(i * 10);
+            }
+        }).start();
+
+        // Consumer thread
+        new Thread(() -> {
+            for (int i = 1; i <= 5; i++) {
+                d.consume();
+            }
+        }).start();
+    }
+}

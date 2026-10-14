@@ -1,0 +1,48 @@
+import java.util.Random;
+
+// Thread to generate a random integer
+class NumberThread extends Thread {
+    public void run() {
+        int n = new Random().nextInt(10) + 1; // Generates a random integer between 1 and 10
+        System.out.println("Random Number: " + n);
+        
+        if (n % 2 == 0) {
+            new SquareThread(n).start(); // Start SquareThread if even
+        } else {
+            new CubeThread(n).start();   // Start CubeThread if odd
+        }
+    }
+}
+
+// Thread to compute and print the square of an even number
+class SquareThread extends Thread {
+    int n;
+    
+    SquareThread(int n) {
+        this.n = n;
+    }
+
+    public void run() {
+        System.out.println("Square: " + (n * n));
+    }
+}
+
+// Thread to compute and print the cube of an odd number
+class CubeThread extends Thread {
+    int n;
+    
+    CubeThread(int n) {
+        this.n = n;
+    }
+
+    public void run() {
+        System.out.println("Cube: " + (n * n * n));
+    }
+}
+
+// Main class to initiate the thread execution
+public class MultiThreadDemo {
+    public static void main(String[] args) {
+        new NumberThread().start();
+    }
+}

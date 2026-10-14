@@ -1,0 +1,70 @@
+// Abstract class Shape
+abstract class Shape {
+    int val1;
+    int val2;
+
+    // Constructor to initialize the two integers
+    Shape(int val1, int val2) {
+        this.val1 = val1;
+        this.val2 = val2;
+    }
+
+    // Abstract method (empty method to be implemented by subclasses)
+    abstract void printArea();
+}
+
+// Rectangle class inheriting from Shape
+class Rectangle extends Shape {
+    Rectangle(int length, int breadth) {
+        super(length, breadth);
+    }
+
+    @Override
+    void printArea() {
+        double area = val1 * val2;
+        System.out.println("Area of Rectangle: " + area);
+    }
+}
+
+// Triangle class inheriting from Shape
+class Triangle extends Shape {
+    Triangle(int base, int height) {
+        super(base, height);
+    }
+
+    @Override
+    void printArea() {
+        double area = 0.5 * val1 * val2;
+        System.out.println("Area of Triangle: " + area);
+    }
+}
+
+// Circle class inheriting from Shape
+class Circle extends Shape {
+    // Circle typically needs only one value (radius), but we pass it 
+    // to match the Shape class requirement of holding two integers.
+    Circle(int radius) {
+        super(radius, radius);
+    }
+
+    @Override
+    void printArea() {
+        double area = Math.PI * val1 * val1;
+        System.out.println("Area of Circle: " + area);
+    }
+}
+
+// Main class to test the application
+public class Main {
+    public static void main(String[] args) {
+        // Creating objects of derived classes using Shape reference
+        Shape rect = new Rectangle(10, 5);
+        Shape tri = new Triangle(10, 5);
+        Shape circ = new Circle(7);
+
+        // Printing the areas
+        rect.printArea();
+        tri.printArea();
+        circ.printArea();
+    }
+}
